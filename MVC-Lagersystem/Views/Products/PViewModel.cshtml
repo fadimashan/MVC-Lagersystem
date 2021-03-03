@@ -1,0 +1,58 @@
+﻿@model IEnumerable<MVC_Lagersystem.Models.ProductViewModel>
+
+@{
+    ViewData["Title"] = "PViewModel";
+}
+
+<h1>ProductsViewModel</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-striped" style="max-width:50%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Count)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <td></td>
+
+            <td><p style="font-weight:bold">Inventory Value</p></td>
+
+            <td>
+                @Html.DisplayFor(modelItem => Model.First().InventoryValue)
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
