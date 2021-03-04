@@ -4,23 +4,22 @@
     ViewData["Title"] = "PViewModel";
 }
 
-<h1>ProductsViewModel</h1>
+<h1>Take Stock</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table table-striped" style="max-width:50%">
+<table class="table table-striped" style="max-width:70%">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.Count)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InventoryValue)
             </th>
         </tr>
     </thead>
@@ -31,25 +30,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td></td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Count)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InventoryValue)
+                </td>
             </tr>
         }
-        <tr>
-            <td></td>
-            <td></td>
-
-            <td><p style="font-weight:bold">Inventory Value</p></td>
-
-            <td>
-                @Html.DisplayFor(modelItem => Model.First().InventoryValue)
-            </td>
-        </tr>
+       
     </tbody>
 </table>
 

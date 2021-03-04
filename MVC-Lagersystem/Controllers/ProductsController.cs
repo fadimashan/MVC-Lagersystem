@@ -16,14 +16,9 @@ namespace MVC_Lagersystem.Controllers
 
         IEnumerable<ProductViewModel> GetProducts = Enumerable.Empty<ProductViewModel>();
 
-
-
-
-        //  readonly List<Product> products;
         public ProductsController(MVC_LagersystemContext context)
         {
             _context = context;
-
         }
 
         // GET: Products
@@ -65,7 +60,24 @@ namespace MVC_Lagersystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
+                var unique = true;
+                foreach (var p in _context.Product)
+                {
+                    if (p.Name == product.Name)
+                    {
+                        p.Count += product.Count;
+                        unique = false;
+                    }
+
+                }
+
+                if (unique)
+                {
+                    _context.Add(product);
+                }
+
+
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -157,39 +169,28 @@ namespace MVC_Lagersystem.Controllers
             return _context.Product.Any(e => e.Id == id);
         }
 
-   
+
         public async Task<IActionResult> PViewModel()
         {
-            var total = (_context.Product.Select( c => c.Price)
-                         ).Sum();
-            var listWithEmpty = (from p in _context.Product
-                                 join f in _context.ProductViewModels
-                                 on p.Id equals f.Id into ThisList
-                                 from f in ThisList.DefaultIfEmpty()
-                                 select new
-                                 {
-                                     Name = p.Name,
-                                     Price = p.Price,
-                                     Id = p.Id,
-                                     Count = p.Count,
-                                    
-                                 }).ToList()
-                       .Select(x => new ProductViewModel()
-                       {
-                           Name = x.Name,
-                           Price = x.Price,
-                           Id = x.Id,
-                           Count = x.Count,
-                           InventoryValue = total
-                       });
 
+            var model = _context.Product.Select(x => new ProductViewModel()
+            {
+                Name = x.Name,
+                Price = x.Price,
+                Id = x.Id,
+                Count = x.Count,
+                InventoryValue = x.Price * x.Count
+            });
 
-            return View(listWithEmpty);
+            return View(await model.ToListAsync());
         }
 
 
-
+        public ActionResult Filter(string category)
+        {
+            var listOfP = _context.Product.ToList();
+            var tempList = listOfP.Where(p => p.Category.ToLower().Contains(category)).ToList();
+            return View("Filter", tempList);
+        }
     }
-
-
 }
