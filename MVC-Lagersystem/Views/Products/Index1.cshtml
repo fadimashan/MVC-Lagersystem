@@ -1,0 +1,26 @@
+﻿@model ProductCategoryVM
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1> Index1</h1>
+
+<form asp-action="Filter2">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" asp-for="Name" placeholder="Search on name" />
+        <div class="input-group-append">
+            <select asp-for="Category" asp-items="@Model.Categorys" class="form-control">
+                <option selected="selected" value="">Please select</option>
+            </select>
+        </div>
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary"><i class="fa fa-search">&emsp;Search</i></button>
+        </div>
+    </div>
+</form>
+
+
+
+<partial name="ProductPartial" model="@Model.Products"/>

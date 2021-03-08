@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVC_Lagersystem.Data;
 using MVC_Lagersystem.Models;
+using MVC_Lagersystem.Repo;
 
 namespace MVC_Lagersystem.Controllers
 {
@@ -21,11 +22,49 @@ namespace MVC_Lagersystem.Controllers
             _context = context;
         }
 
-        // GET: Products
+        //GET: Products
         public async Task<IActionResult> Index()
         {
+
             return View(await _context.Product.ToListAsync());
         }
+
+
+        public async Task<IActionResult> Index3()
+        {
+           
+            var products = await _context.Product.ToArrayAsync();
+            var model = new ProductCategoryVM()
+            {
+                Products = products,
+                Categorys = await GetCategoryAsync()
+
+            };
+
+            return View(model);
+        }
+
+        private async Task<IEnumerable<SelectListItem>> GetCategoryAsync()
+        {
+            return await _context.Product
+                .Select(p => p.Category)
+                .Distinct()
+                .Select(g => new SelectListItem
+                {
+                    Text = g.ToString(),
+                    Value = g.ToString()
+                })
+                .ToListAsync();
+        }
+
+        public IActionResult DisplayForm()
+        {
+
+            var model = from item in _context.Product select item.Category;
+
+            return View("PViewModel", model);
+        }
+
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -75,8 +114,6 @@ namespace MVC_Lagersystem.Controllers
                 {
                     _context.Add(product);
                 }
-
-
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -172,7 +209,6 @@ namespace MVC_Lagersystem.Controllers
 
         public async Task<IActionResult> PViewModel()
         {
-
             var model = _context.Product.Select(x => new ProductViewModel()
             {
                 Name = x.Name,
@@ -191,6 +227,26 @@ namespace MVC_Lagersystem.Controllers
             var listOfP = _context.Product.ToList();
             var tempList = listOfP.Where(p => p.Category.ToLower().Contains(category)).ToList();
             return View("Filter", tempList);
+        }
+
+        public async Task<IActionResult> Filter2(ProductCategoryVM viewModel)
+        {
+            var products = string.IsNullOrWhiteSpace(viewModel.Name) ?
+                _context.Product :
+                _context.Product.Where(m => m.Name.StartsWith(viewModel.Name));
+
+            products = viewModel.Category == null ?
+                products :
+                products.Where(m => m.Category == viewModel.Category);
+
+            var model = new ProductCategoryVM
+            {
+                Products = products,
+                Categorys = await GetCategoryAsync()
+            };
+
+            return View(nameof(Index3), model);
+
         }
     }
 }

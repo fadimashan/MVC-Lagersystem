@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -36,6 +37,7 @@ namespace MVC_Lagersystem.Models
         [Required]
         [StringLength(300, ErrorMessage = "Max 300 tecken")]
         public string Description { get; set; }
+
 
     }
 }

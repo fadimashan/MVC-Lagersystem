@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MVC_Lagersystem.Controllers;
 using MVC_Lagersystem.Data;
 using System;
@@ -21,6 +22,8 @@ namespace MVC_Lagersystem.Models
         public int Price { get; set; }
 
         public int Count { get; set; }
+
+        public string Category { get; set; }
 
         public int InventoryValue { get; set; }
 
