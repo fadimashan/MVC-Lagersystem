@@ -5,7 +5,7 @@
     ViewData["Title"] = "Index3";
 }
 
-<h1> Index1</h1>
+<h1> Filter by Category</h1>
 
 
 
@@ -13,12 +13,12 @@
     <div class="input-group mb-2">
         <input type="text" class="form-control" asp-for="Name" placeholder="Search on name" />
         <div class="input-group-append">
-            <select asp-for="Category" asp-items="@Model.Categorys" class="form-control">
+            <select asp-for="Category" asp-items="@Model.Categorys" onchange="this.form.submit()" class="form-control">
                 <option selected="selected" value="">Please select</option>
             </select>
         </div>
         <div class="input-group-append mb-2 ml-1">
-            <button type="submit" class="btn btn-dark" style="border-radius:4px"><i class="fa fa-search">&emsp;Search</i></button>
+            <button type="submit" class="btn btn-dark" style="border-radius:4px"><i class="fa fa-search"> &emsp;Search</i></button>
         </div>
     </div>
 </form>
@@ -26,3 +26,4 @@
 
 
 <partial name="ProductPartial" model="@Model.Products" />
+

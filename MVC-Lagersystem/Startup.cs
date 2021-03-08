@@ -27,6 +27,8 @@ namespace MVC_Lagersystem
         {
             services.AddControllersWithViews();
 
+
+
             services.AddDbContext<MVC_LagersystemContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MVC_LagersystemContext")));
         }

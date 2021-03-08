@@ -39,5 +39,9 @@ namespace MVC_Lagersystem.Models
         public string Description { get; set; }
 
 
+        public Rate Rate { get; set; }
+
     }
+
+
 }
